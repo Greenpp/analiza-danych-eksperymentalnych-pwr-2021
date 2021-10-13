@@ -1,0 +1,21 @@
+FILE: data2
+
+Wartości opisowe:
+
+Średnia:
+x    9.0
+y    7.5
+dtype: float64
+Wariacja:
+x    11.00
+y     4.13
+dtype: float64
+Korelacja:
+      x     y
+x  1.00  0.82
+y  0.82  1.00
+
+
+
+Regresja:
+Coeff B0:3.00091 B1:0.5
