@@ -24,6 +24,8 @@ for i in tqdm(range(4)):
         f.write(str(data.mean().round(2)))
         f.write('\nWariacja:\n')
         f.write(str(data.var().round(2)))
+        f.write('\nMediana:\n')
+        f.write(str(data.median().round(2)))
         f.write('\nKorelacja:\n')
         f.write(str(data.corr().round(2)))
         f.write('\n' * 3)

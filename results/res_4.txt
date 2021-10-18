@@ -10,6 +10,10 @@ Wariacja:
 x    11.00
 y     4.12
 dtype: float64
+Mediana:
+x    8.00
+y    7.04
+dtype: float64
 Korelacja:
       x     y
 x  1.00  0.82
