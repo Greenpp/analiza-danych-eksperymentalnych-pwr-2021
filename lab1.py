@@ -35,7 +35,7 @@ for i in tqdm(range(4)):
         b1 = round(reg.coef_[0], 5)
         b0 = round(reg.intercept_, 5)
         f.write(f'Coeff B0:{b0} B1:{b1}')
-    sns.regplot(data=data, x='x', y='y')
+    sns.regplot(data=data, x='x', y='y', ci=0)
     plt.title(f'Seria {i + 1}')
 
     plot_path = PLOTS_PATH / f'plot_{i + 1}'
