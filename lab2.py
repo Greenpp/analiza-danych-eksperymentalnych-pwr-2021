@@ -7,10 +7,10 @@ DATA_DIR = Path('./data')
 EXPORT_DIR = Path('./export_lab2')
 
 FILES = [
-    'data1',
-    'data2',
-    'data3',
-    'data4',
+    'data1.csv',
+    'data2.csv',
+    'data3.csv',
+    'data4.csv',
 ]
 
 
