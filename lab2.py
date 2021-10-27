@@ -1,5 +1,6 @@
 # %%
 from pathlib import Path
+import seaborn as sns
 
 import pandas as pd
 
@@ -24,6 +25,8 @@ def load_data_lab1(file_name: str) -> pd.DataFrame:
 
 def export(df: pd.DataFrame, name: str) -> None:
     EXPORT_DIR.mkdir(exist_ok=True, parents=True)
+    
+    name = name.split('.')[0]
 
     df.to_json(EXPORT_DIR / f'{name}.json')
     df.to_xml(EXPORT_DIR / f'{name}.xml')
@@ -37,7 +40,14 @@ def describe_data(df: pd.DataFrame, name: str):
 
 
 def drop_outliers(df: pd.DataFrame) -> pd.DataFrame:
-    pass
+    stds = df.std() * 3
+    means = df.mean()
+    lower_bound, upper_bound = means - stds, means + stds
+
+    mask = (df > lower_bound) & (df < upper_bound)
+    df_clean = df[mask.all(axis=1)]
+    
+    return df_clean
 
 
 # %%
