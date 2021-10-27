@@ -1,8 +1,10 @@
 # %%
 from pathlib import Path
-import seaborn as sns
 
 import pandas as pd
+import seaborn as sns
+from scipy.stats import linregress
+from sklearn.metrics import r2_score
 
 DATA_DIR = Path('./data')
 EXPORT_DIR = Path('./export_lab2')
@@ -25,7 +27,7 @@ def load_data_lab1(file_name: str) -> pd.DataFrame:
 
 def export(df: pd.DataFrame, name: str) -> None:
     EXPORT_DIR.mkdir(exist_ok=True, parents=True)
-    
+
     name = name.split('.')[0]
 
     df.to_json(EXPORT_DIR / f'{name}.json')
@@ -46,13 +48,24 @@ def drop_outliers(df: pd.DataFrame) -> pd.DataFrame:
 
     mask = (df > lower_bound) & (df < upper_bound)
     df_clean = df[mask.all(axis=1)]
-    
+
     return df_clean
+
+
+def r2_compare(df: pd.DataFrame) -> None:
+    res = linregress(x=df['x'], y=df['y'])
+    print(f'R2 before: {res.rvalue ** 2}')
+    df_clean = drop_outliers(df)
+    res_clean = linregress(x=df['x'], y=df['y'])
+    print(f'R2 after: {res_clean.rvalue ** 2}')
 
 
 # %%
 for f_name in FILES:
     df = load_data_lab1(f_name)
+    print(50 * '=')
+    print(df)
     export(df, f_name)
     describe_data(df, f_name)
+    r2_compare(df)
 # %%
