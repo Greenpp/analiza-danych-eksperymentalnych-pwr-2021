@@ -161,15 +161,18 @@ data_1d = generate_1d_data(plot=True)
 l = np.linspace(0, 5, 100).reshape((-1, 1))
 
 print('WIELOMIAN 1 STOPNIA')
+print('[1, a]')
 coeff_1 = calculate_coeff(l, data_1d, 1)
 plot_poly(data_1d, coeff_1)
 print('WIELOMIAN 3 STOPNIA')
+print('[1, a, a^2, a^3]')
 coeff_3 = calculate_coeff(l, data_1d, 3)
 plot_poly(data_1d, coeff_3)
 
 
 print('FUNKCJA 2 ZMIENNYCH')
 data_2d = generate_2d_data(plot=True)
+print('[1, a, b, a^2, ab, b^2]')
 coeff_2 = calculate_coeff(np.hstack((l, l)), data_2d, 2)
 
 l = l.reshape(-1)
