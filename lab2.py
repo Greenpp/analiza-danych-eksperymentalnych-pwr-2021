@@ -136,8 +136,6 @@ def get_design_matrix(data: np.ndarray, degree: int) -> None:
 
 
 def plot_poly(data: np.ndarray, coeff: np.ndarray) -> None:
-    degree = len(coeff) - 1
-
     l = np.linspace(0, 5, 100)
     y = sum([l ** i * n for i, n in enumerate(coeff)])
 
@@ -172,4 +170,28 @@ plot_poly(data_1d, coeff_3)
 
 print('FUNKCJA 2 ZMIENNYCH')
 data_2d = generate_2d_data(plot=True)
+coeff_2 = calculate_coeff(np.hstack((l, l)), data_2d, 2)
+
+l = l.reshape(-1)
+reg_2d = (
+    coeff_2[0]
+    + coeff_2[1] * l
+    + coeff_2[2] * l
+    + coeff_2[3] * l ** 2
+    + coeff_2[4] * l * l
+    + coeff_2[5] * l ** 2
+)
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+ax.set_xlabel('x')
+ax.set_ylabel('y')
+ax.set_zlabel('f')
+
+ax.scatter(l, l, data_2d)
+ax.plot(l, l, reg_2d, color='orange')
+plt.show()
+plt.clf()
+
 # %%
