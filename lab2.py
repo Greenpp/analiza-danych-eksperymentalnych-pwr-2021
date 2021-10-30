@@ -1,10 +1,10 @@
 # %%
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import seaborn as sns
 from scipy.stats import linregress
-from sklearn.metrics import r2_score
 
 DATA_DIR = Path('./data')
 EXPORT_DIR = Path('./export_lab2')
@@ -38,7 +38,7 @@ def export(df: pd.DataFrame, name: str) -> None:
 
 def describe_data(df: pd.DataFrame, name: str):
     print(f'File {name}')
-    print(df.describe([0.25, 0.5, 0.75]))
+    print(df.describe().loc[['25%', '50%', '75%']])
 
 
 def drop_outliers(df: pd.DataFrame) -> pd.DataFrame:
@@ -60,6 +60,16 @@ def r2_compare(df: pd.DataFrame) -> None:
     print(f'R2 after: {res_clean.rvalue ** 2}')
 
 
+def generate_data() -> np.ndarray:
+    x = np.linspace(0, 5, 100)
+    mu = 0
+    sigma = 0.1
+    noise = mu + sigma * np.random.randn(100)
+    y = np.log(x + 1) + noise
+
+    return y
+
+
 # %%
 for f_name in FILES:
     df = load_data_lab1(f_name)
@@ -68,4 +78,9 @@ for f_name in FILES:
     export(df, f_name)
     describe_data(df, f_name)
     r2_compare(df)
+# %%
+y = generate_data()
+# %%
+sns.scatterplot(x=np.linspace(0, 5, 100), y=y)
+
 # %%
