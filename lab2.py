@@ -103,7 +103,8 @@ def generate_2d_data(plot: bool = False) -> np.ndarray:
         ax.set_ylabel('y')
         ax.set_zlabel('f')
 
-        ax.scatter(x, y, z)
+        # ax.scatter(x, y, z)
+        ax.plot(x, y, z)
         plt.show()
         plt.clf()
 
@@ -184,7 +185,7 @@ reg_2d = (
     + coeff_2[4] * l * l
     + coeff_2[5] * l ** 2
 )
-
+# %%
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
@@ -192,9 +193,25 @@ ax.set_xlabel('x')
 ax.set_ylabel('y')
 ax.set_zlabel('f')
 
-ax.scatter(l, l, data_2d)
+ax.plot(l, l, data_2d)
 ax.plot(l, l, reg_2d, color='orange')
+
+ax.set_zlim((-1, 1))
 plt.show()
 plt.clf()
 
+# %%
+# Error
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+ax.set_xlabel('x')
+ax.set_ylabel('y')
+ax.set_zlabel('błąd')
+
+# ax.scatter(x, y, z)
+ax.plot(l, l, data_2d - reg_2d, color='red')
+ax.set_zlim((-1, 1))
+plt.show()
+plt.clf()
 # %%
