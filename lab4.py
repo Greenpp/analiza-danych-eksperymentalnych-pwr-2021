@@ -4,12 +4,10 @@ from pathlib import Path
 import pandas as pd
 
 # %%
-SEPTAL_LENGTH = 'septal length'
-SEPTAL_WIDTH = 'septal width'
-PETAL_LENGTH = 'petal length'
-PETAL_WIDTH = 'petal width'
-DOMAIN = 'domain'
-DATA_FILE = './data_final/iris.data'
+STRENGTH = 'strength'
+TEMPERATURE = 'temperature'
+PRESSURE = 'pressure'
+DATA_FILE = './data_final/plastic.dat'
 
 
 def load_data() -> pd.DataFrame:
@@ -17,16 +15,8 @@ def load_data() -> pd.DataFrame:
     if not data_file.exists():
         raise FileNotFoundError(f'File not found at {data_file.absolute()}')
 
-    return pd.read_csv(
-        data_file,
-        names=[
-            SEPTAL_LENGTH,
-            SEPTAL_WIDTH,
-            PETAL_LENGTH,
-            PETAL_WIDTH,
-            DOMAIN,
-        ],
-    )
+    return pd.read_csv(data_file, names=[STRENGTH, TEMPERATURE, PRESSURE], skiprows=7)
+
 
 # %%
 data = load_data()
@@ -36,4 +26,6 @@ data.cov()
 data.corr(method='pearson')
 # %%
 data.corr(method='spearman')
+# %%
+data
 # %%
