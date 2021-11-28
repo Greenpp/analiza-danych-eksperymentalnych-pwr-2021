@@ -64,56 +64,63 @@ def run_training(X: np.ndarray, y: np.ndarray) -> tuple[np.ndarray, list]:
     return scores, models
 
 
-# %%
 data = load_data()
 X, y = preprocess(data)
-# %%
 # Default training
 res, models = run_training(X, y)
-res.mean(axis=1)
-# %%
+print('Wyniki')
+print(res.mean(axis=1))
 # Noise
 X_noise = add_noise(X)
 res_noise, models_noise = run_training(X_noise, y)
-res_noise.mean(axis=1)
-# %%
-data.corr(method='pearson')
-# %%
-data.corr(method='spearman')
-# %%
-data.cov()
-# %%
+print('Wyniki po dodaniu szumu')
+print(res_noise.mean(axis=1))
+print('Korelacja Pearsona')
+print(data.corr(method='pearson'))
+print('Korelacja Spearmana')
+print(data.corr(method='spearman'))
+print('Kowariancja')
+print(data.cov())
 lr = LinearRegression()
 lr.fit(X, y)
-lr.score(X, y)
-# %%
+print('Regresja liniowa dla całego zbioru')
+print(f'R2: {lr.score(X, y)}')
+print(f'Współczynniki: {lr.coef_}')
 sns.pairplot(data)
-
-# %%
+plt.show()
+plt.clf()
 # Ridge
+print('Grzbietowa współczynniki')
 print(models[1].coef_)
 print(models[2].coef_)
 print(models[3].coef_)
 print(models[4].coef_)
-# %%
 # Lasso
+print('Lasso współczynniki')
 print(models[5].coef_)
 print(models[6].coef_)
 print(models[7].coef_)
 print(models[8].coef_)
-# %%
+print('R2 dla modeli')
 for m, r in zip(MODELS.keys(), res.mean(axis=1)):
     print(f'{m:30}: {r}')
-# %%
 # All
 sns.boxplot(data=res.T)
-# %%
+plt.show()
+plt.clf()
 # Ridge
 sns.boxplot(data=res[1:5].T)
-# %%
+plt.show()
+plt.clf()
 # Lasso
 sns.boxplot(data=res[5:9].T)
-# %%
+plt.show()
+plt.clf()
 # Lasso compare
 sns.boxplot(data=np.concatenate((res[5:9].T, res_noise[5:9].T), axis=1))
+plt.show()
+plt.clf()
 # %%
+# Wczytanie
+res = np.load('lab4_res', allow_pickle=True)
+res_noise = np.load('lab4_res_noise', allow_pickle=True)
