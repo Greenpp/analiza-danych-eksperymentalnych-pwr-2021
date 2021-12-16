@@ -1,10 +1,12 @@
 # %%
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-from sklearn.datasets import make_regression
+
+from scipy.stats import moment
 
 DATA_FILE = './data_final/plastic.dat'
 PLOT_DIR = './lab4_plots'
@@ -18,17 +20,45 @@ def load_data() -> pd.DataFrame:
     return pd.read_csv(data_file, header=None, comment='@')
 
 def make_plots(data):
-    for i in range(data.shape[1]):
-        sns.scatterplot(data=data.iloc[:,i])        
-        plt.savefig(PLOT_DIR + '/' + "Scatter_" + str(i))
-        plt.clf()        
-        
-        sns.histplot(data=data.iloc[:,i])
-        plt.title(f'X{i}')
-        plt.xlabel('Średnia')
-        plt.ylabel('Liczność')
-        plt.savefig(PLOT_DIR + '/' + "Hist_" + str(i))
-        plt.clf()
+    sns.histplot(data=data.iloc[:, 0], stat='count')
+    plt.title(f'Strength')
+    plt.xlabel('Średnia')
+    plt.ylabel('Liczność')
+    plt.savefig(PLOT_DIR + '/' + "Hist_Str")
+    plt.clf()
+
+    sns.histplot(data=data.iloc[:, 1], stat='count')
+    plt.title(f'Temperature')
+    plt.xlabel('Średnia')
+    plt.ylabel('Liczność')
+    plt.savefig(PLOT_DIR + '/' + "Hist_Temp")
+    plt.clf()
+
+    sns.histplot(data=data.iloc[:, 2], stat='count')
+    plt.title(f'Pressure')
+    plt.xlabel('Średnia')
+    plt.ylabel('Liczność')
+    plt.savefig(PLOT_DIR + '/' + "Hist_Press")
+    plt.clf()
+
+def make_scatterplots(data):
+    sns.scatterplot(x=data.iloc[:, 0], y=data.iloc[:, 1])  
+    plt.xlabel('Strength')
+    plt.ylabel('Temperature')
+    plt.savefig(PLOT_DIR + '/' + "Scatter_Str_Temp")
+    plt.clf()
+
+    sns.scatterplot(x=data.iloc[:, 1], y=data.iloc[:, 2])
+    plt.xlabel('Temperature')
+    plt.ylabel('Pressure')
+    plt.savefig(PLOT_DIR + '/' + "Scatter_Temp_Press")
+    plt.clf()
+
+    sns.scatterplot(x=data.iloc[:, 2], y=data.iloc[:, 0])
+    plt.xlabel('Pressure')
+    plt.ylabel('Strength')
+    plt.savefig(PLOT_DIR + '/' + "Scatter_Press_Str")
+    plt.clf()
 
 def basic_analysis(data):
     desc = data.describe()
@@ -41,10 +71,31 @@ def basic_analysis(data):
     print(f'Mediana:\n{desc.loc["50%"]}')
     print(f'3 kwartyl:\n{desc.loc["75%"]}')
 
+def advanced_analysis(data):
+    atributes = {'Strength': 0, 'Temperature': 1, 'Pressure': 2}
+    for key, value in atributes.items():
+        print(f'{key}:')
+        moments = []
+        for i in range(4):
+            moments.append(moment(data.iloc[:, value], moment=i))
+        for m in range(len(moments)):
+            print(f'Moment {m+1}: {moments[m]}')
+        mean = np.mean(data.iloc[:, value])
+        print(f'Średnia: {mean}')
+        skew = moments[2] / moments[1] ** (3 / 2)
+        print(f'Asymetria: {skew}')
+        focus = moments[3] / moments[1] ** 2
+        print(f'Skupienie: {focus}')
+        var = moments[1] ** 0.5 / mean * 100
+        print(f'Zmienność: {var}%')
 # %%
 data = load_data()
 # %%
 basic_analysis(data)
 # %%
+advanced_analysis(data)
+# %%
 make_plots(data)
+# %%
+make_scatterplots(data)
 # %%
